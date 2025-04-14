@@ -1,0 +1,45 @@
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api',
+  tiktok: {
+    clientKey: '',
+    clientSecret: '',
+    redirectUri: 'http://localhost:8100/tiktok/callback',
+    scope: 'user.info.basic,video.publish'
+  },
+  videoApis: {
+    geminiVeo: {
+      apiUrl: 'https://ai.google.dev/gemini-api',
+      apiKey: ''
+    },
+    pixVerse: {
+      apiUrl: 'https://api.pixverse.ai/v3.5',
+      apiKey: ''
+    },
+    lumalabs: {
+      apiUrl: 'https://api.lumalabs.ai',
+      apiKey: ''
+    },
+    kling: {
+      apiUrl: 'https://api.fal.ai/kling-video/v1.6',
+      apiKey: ''
+    },
+    hunyuan: {
+      apiUrl: 'https://api.hunyuan.tencent.com',
+      apiKey: ''
+    }
+  },
+  cloudStorage: {
+    googleDrive: {
+      apiKey: '',
+      clientId: ''
+    },
+    box: {
+      clientId: '',
+      clientSecret: ''
+    }
+  },
+  ffmpeg: {
+    path: '/usr/bin/ffmpeg'
+  }
+};

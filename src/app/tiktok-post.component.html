@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tiktok/auth"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Post to TikTok</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="postForm" (ngSubmit)="submitPost()">
+    <div class="video-container" *ngIf="!videoUrl">
+      <div class="upload-placeholder" (click)="openFileSelector()">
+        <ion-icon name="cloud-upload-outline"></ion-icon>
+        <p>Click to select a video</p>
+        <small>Maximum size: 300MB</small>
+      </div>
+      <input #fileInput type="file" accept="video/*" (change)="onFileSelected($event)" hidden>
+    </div>
+    
+    <div class="video-preview-container" *ngIf="videoUrl">
+      <video #videoPreview [src]="videoUrl" controls class="video-preview"></video>
+      <ion-button fill="outline" color="medium" size="small" (click)="openFileSelector()">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        Change Video
+      </ion-button>
+    </div>
+    
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Video Details</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="stacked">Caption <ion-text color="danger">*</ion-text></ion-label>
+          <ion-textarea formControlName="title" rows="3" placeholder="Enter your video caption"></ion-textarea>
+        </ion-item>
+        
+        <div class="caption-templates">
+          <ion-label>Caption Templates:</ion-label>
+          <ion-segment scrollable>
+            <ion-segment-button *ngFor="let template of captionTemplates | keyvalue" (click)="applyTemplate(template.key)">
+              {{ template.key }}
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+        
+        <ion-item>
+          <ion-label position="stacked">Hashtags</ion-label>
+          <ion-input formControlName="hashtags" placeholder="Enter hashtags separated by spaces"></ion-input>
+        </ion-item>
+        
+        <div class="hashtag-suggestions" *ngIf="hashtagSuggestions.length > 0">
+          <ion-label>Suggested Hashtags:</ion-label>
+          <div class="hashtag-chips">
+            <ion-chip *ngFor="let hashtag of hashtagSuggestions" (click)="addHashtag(hashtag.name)">
+              <ion-label>#{{ hashtag.name }}</ion-label>
+              <ion-badge *ngIf="hashtag.trending" color="danger">Trending</ion-badge>
+            </ion-chip>
+          </div>
+        </div>
+        
+        <ion-item>
+          <ion-label position="stacked">Mentions</ion-label>
+          <ion-input formControlName="mentions" placeholder="Enter @usernames separated by spaces"></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label>Privacy</ion-label>
+          <ion-select formControlName="privacyLevel" interface="action-sheet">
+            <ion-select-option *ngFor="let option of privacyOptions" [value]="option.value">
+              {{ option.label }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        
+        <ion-item lines="none">
+          <ion-label>Posting Schedule</ion-label>
+        </ion-item>
+        
+        <div class="optimal-times">
+          <ion-label>Optimal posting times:</ion-label>
+          <div class="time-chips">
+            <ion-chip *ngFor="let time of optimalPostingTimes" (click)="setPostingTime(time)">
+              <ion-icon name="time-outline"></ion-icon>
+              <ion-label>{{ time }}</ion-label>
+            </ion-chip>
+          </div>
+        </div>
+        
+        <ion-item>
+          <ion-label>Advanced Options</ion-label>
+        </ion-item>
+        
+        <ion-list lines="full">
+          <ion-item>
+            <ion-label>Disable Duets</ion-label>
+            <ion-toggle formControlName="disableDuet"></ion-toggle>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label>Disable Stitches</ion-label>
+            <ion-toggle formControlName="disableStitch"></ion-toggle>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label>Disable Comments</ion-label>
+            <ion-toggle formControlName="disableComment"></ion-toggle>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label>Mark as AI-generated</ion-label>
+            <ion-toggle formControlName="isAigc"></ion-toggle>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    
+    <div class="submit-buttons">
+      <ion-button expand="block" type="submit" [disabled]="!selectedFile || postForm.invalid || isUploading">
+        <ion-icon name="logo-tiktok" slot="start"></ion-icon>
+        Post to TikTok
+      </ion-button>
+      
+      <ion-button expand="block" fill="outline" type="button" (click)="resetForm()">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        Reset Form
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

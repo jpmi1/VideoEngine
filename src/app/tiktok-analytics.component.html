@@ -1,0 +1,122 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tiktok/auth"></ion-back-button>
+    </ion-buttons>
+    <ion-title>TikTok Analytics</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Loading analytics data...</p>
+  </div>
+
+  <div *ngIf="!isLoading">
+    <div *ngIf="totalPosts === 0" class="empty-state">
+      <ion-icon name="bar-chart-outline"></ion-icon>
+      <h2>No Analytics Data Available</h2>
+      <p>Start posting videos to TikTok to see analytics</p>
+      <ion-button routerLink="/tiktok/post">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Create New Post
+      </ion-button>
+    </div>
+
+    <div *ngIf="totalPosts > 0">
+      <!-- Time period filter -->
+      <ion-segment [(ngModel)]="timePeriod" (ionChange)="changeTimePeriod(timePeriod)">
+        <ion-segment-button value="week">
+          <ion-label>Week</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="month">
+          <ion-label>Month</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="all">
+          <ion-label>All Time</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- Summary cards -->
+      <div class="summary-cards">
+        <ion-card>
+          <ion-card-content>
+            <div class="summary-value">{{ totalPosts }}</div>
+            <div class="summary-label">Total Posts</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-content>
+            <div class="summary-value">{{ publishedPosts }}</div>
+            <div class="summary-label">Published</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-content>
+            <div class="summary-value">{{ getSuccessRate() }}%</div>
+            <div class="summary-label">Success Rate</div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Status distribution chart -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Post Status Distribution</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="chart-container">
+            <canvas id="statusChart"></canvas>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Timeline chart -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Posting Timeline</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="chart-container">
+            <canvas id="timelineChart"></canvas>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Posting tips -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Posting Tips</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list lines="none">
+            <ion-item>
+              <ion-icon name="time-outline" slot="start" color="primary"></ion-icon>
+              <ion-label>
+                <h3>Best Time to Post</h3>
+                <p>Based on your data, the optimal posting times are between 5-7 PM</p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="videocam-outline" slot="start" color="primary"></ion-icon>
+              <ion-label>
+                <h3>Optimal Video Length</h3>
+                <p>Videos between 15-30 seconds have the highest completion rate</p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="pricetags-outline" slot="start" color="primary"></ion-icon>
+              <ion-label>
+                <h3>Trending Hashtags</h3>
+                <p>Include trending hashtags to increase visibility</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

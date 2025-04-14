@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tiktok/auth"></ion-back-button>
+    </ion-buttons>
+    <ion-title>TikTok Posts</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/tiktok/post">
+        <ion-icon name="add-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshStatuses($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Loading posts...</p>
+  </div>
+
+  <div *ngIf="!isLoading && postStatuses.length === 0" class="empty-state">
+    <ion-icon name="videocam-outline"></ion-icon>
+    <h2>No TikTok Posts Yet</h2>
+    <p>Start creating and posting videos to TikTok</p>
+    <ion-button routerLink="/tiktok/post">
+      <ion-icon name="add-outline" slot="start"></ion-icon>
+      Create New Post
+    </ion-button>
+  </div>
+
+  <ion-list *ngIf="!isLoading && postStatuses.length > 0">
+    <ion-item-sliding *ngFor="let post of postStatuses">
+      <ion-item (click)="post.videoUrl ? openTikTokVideo(post.videoUrl) : showPostDetails(post)">
+        <ion-thumbnail slot="start" class="status-thumbnail">
+          <div class="status-icon" [ngClass]="post.status.toLowerCase()">
+            <ion-icon *ngIf="post.status === 'PROCESSING'" name="hourglass-outline"></ion-icon>
+            <ion-icon *ngIf="post.status === 'PUBLISHED'" name="checkmark-circle-outline"></ion-icon>
+            <ion-icon *ngIf="post.status === 'FAILED'" name="alert-circle-outline"></ion-icon>
+          </div>
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ post.publishId }}</h2>
+          <p>Status: <ion-text [color]="post.status === 'PUBLISHED' ? 'success' : (post.status === 'FAILED' ? 'danger' : 'warning')">{{ post.status }}</ion-text></p>
+          <p>Created: {{ post.createdAt | date:'medium' }}</p>
+        </ion-label>
+        <ion-icon *ngIf="post.videoUrl" name="open-outline" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="showPostDetails(post)">
+          <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+        </ion-item-option>
+        <ion-item-option *ngIf="post.status === 'PROCESSING'" color="warning" (click)="tikTokPostingService.checkPostStatus(post.publishId).subscribe()">
+          <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

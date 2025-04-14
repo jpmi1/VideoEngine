@@ -1,0 +1,117 @@
+.video-container {
+  width: 100%;
+  margin-bottom: 20px;
+  
+  .upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    border: 2px dashed var(--ion-color-medium);
+    border-radius: 8px;
+    cursor: pointer;
+    
+    ion-icon {
+      font-size: 48px;
+      color: var(--ion-color-medium);
+      margin-bottom: 16px;
+    }
+    
+    p {
+      font-size: 18px;
+      color: var(--ion-color-medium);
+      margin-bottom: 8px;
+    }
+    
+    small {
+      color: var(--ion-color-medium);
+    }
+    
+    &:hover {
+      background-color: rgba(var(--ion-color-medium-rgb), 0.1);
+    }
+  }
+}
+
+.video-preview-container {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  .video-preview {
+    width: 100%;
+    max-height: 400px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #000;
+  }
+}
+
+.caption-templates {
+  margin: 16px 0;
+  
+  ion-label {
+    display: block;
+    margin-bottom: 8px;
+    padding-left: 16px;
+    font-size: 14px;
+    color: var(--ion-color-medium);
+  }
+  
+  ion-segment {
+    --background: transparent;
+  }
+}
+
+.hashtag-suggestions, .optimal-times {
+  margin: 16px 0;
+  
+  ion-label {
+    display: block;
+    margin-bottom: 8px;
+    padding-left: 16px;
+    font-size: 14px;
+    color: var(--ion-color-medium);
+  }
+  
+  .hashtag-chips, .time-chips {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 16px;
+    
+    ion-chip {
+      margin: 4px;
+      
+      ion-badge {
+        margin-left: 4px;
+        font-size: 10px;
+      }
+    }
+  }
+}
+
+.submit-buttons {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  
+  ion-button {
+    margin-bottom: 12px;
+  }
+}
+
+// Optimize for vertical video format
+@media (min-width: 768px) {
+  .video-container, .video-preview-container {
+    max-width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .video-preview {
+    aspect-ratio: 9/16;
+    object-fit: contain;
+  }
+}

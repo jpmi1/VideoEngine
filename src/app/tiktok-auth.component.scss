@@ -1,0 +1,65 @@
+.auth-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  
+  ion-spinner {
+    margin-bottom: 16px;
+  }
+}
+
+.error-message {
+  color: var(--ion-color-danger);
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  
+  ion-icon {
+    margin-right: 8px;
+  }
+}
+
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 16px;
+  }
+  
+  .stats-col {
+    text-align: center;
+    border-right: 1px solid var(--ion-color-light);
+    
+    &:last-child {
+      border-right: none;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--ion-color-dark);
+    }
+    
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--ion-color-medium);
+    }
+  }
+  
+  .bio {
+    margin: 16px 0;
+    padding: 8px;
+    background-color: var(--ion-color-light);
+    border-radius: 8px;
+  }
+}

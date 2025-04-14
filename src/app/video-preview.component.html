@@ -1,0 +1,26 @@
+<div class="video-container" [ngClass]="videoFormat.aspectRatio.replace(':', '-')">
+  <video #videoElement [src]="videoUrl" controls *ngIf="videoUrl" class="video-preview"></video>
+  
+  <div #captionElement class="caption-overlay" *ngIf="optimizedCaption && videoUrl">
+    {{ optimizedCaption }}
+  </div>
+  
+  <!-- Safe zone indicators (only visible in development) -->
+  <div class="safe-zone-indicator" *ngIf="safeZone && videoUrl">
+    <div class="safe-zone-border"></div>
+  </div>
+  
+  <!-- Placeholder when no video is selected -->
+  <div class="video-placeholder" *ngIf="!videoUrl">
+    <ion-icon name="videocam-outline"></ion-icon>
+    <p>No video selected</p>
+  </div>
+</div>
+
+<!-- Video format controls -->
+<div class="format-controls" *ngIf="videoUrl">
+  <ion-item lines="none">
+    <ion-label>TikTok Optimized</ion-label>
+    <ion-toggle checked disabled></ion-toggle>
+  </ion-item>
+</div>

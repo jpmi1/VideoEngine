@@ -1,0 +1,21 @@
+ion-menu {
+  --background: var(--ion-color-light);
+  
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+  }
+  
+  ion-item-divider {
+    --background: var(--ion-color-light-shade);
+    --color: var(--ion-color-medium);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-top: 8px;
+  }
+}
+
+ion-content {
+  --background: var(--ion-color-light);
+}

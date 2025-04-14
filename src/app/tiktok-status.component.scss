@@ -1,0 +1,83 @@
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 32px;
+  
+  ion-spinner {
+    margin-bottom: 16px;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 16px;
+  
+  ion-icon {
+    font-size: 64px;
+    color: var(--ion-color-medium);
+    margin-bottom: 16px;
+  }
+  
+  h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    margin-bottom: 24px;
+  }
+}
+
+.status-thumbnail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .status-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &.processing {
+      background-color: rgba(var(--ion-color-warning-rgb), 0.2);
+      
+      ion-icon {
+        color: var(--ion-color-warning);
+        font-size: 24px;
+      }
+    }
+    
+    &.published {
+      background-color: rgba(var(--ion-color-success-rgb), 0.2);
+      
+      ion-icon {
+        color: var(--ion-color-success);
+        font-size: 24px;
+      }
+    }
+    
+    &.failed {
+      background-color: rgba(var(--ion-color-danger-rgb), 0.2);
+      
+      ion-icon {
+        color: var(--ion-color-danger);
+        font-size: 24px;
+      }
+    }
+  }
+}
