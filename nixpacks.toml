@@ -5,7 +5,7 @@ nixPkgs = ["nodejs", "npm", "ffmpeg"]
 cmds = ["npm install"]
 
 [phases.build]
-cmds = ["npm run build"]
+cmds = ["npx ionic build --prod"]
 
 [start]
 cmd = "node server.js"
