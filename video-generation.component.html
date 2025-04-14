@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Video Generation</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancelProcessing()" *ngIf="isProcessing">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card *ngIf="!isProcessing">
+    <ion-card-header>
+      <ion-card-title>Project Details</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Project Name</ion-label>
+        <ion-input [(ngModel)]="projectName" placeholder="Enter project name"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea [(ngModel)]="projectDescription" placeholder="Enter project description" rows="3"></ion-textarea>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label>Select Video API</ion-label>
+        <ion-select [(ngModel)]="selectedApiProvider">
+          <ion-select-option *ngFor="let provider of availableProviders" [value]="provider">
+            {{ getProviderDisplayName(provider) }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="!isProcessing">
+    <ion-card-header>
+      <ion-card-title>Video Specifications</ion-card-title>
+      <ion-card-subtitle>{{ videoSpecifications.length }} videos to process</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="table-container">
+        <table class="video-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Length</th>
+              <th>Style</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let spec of videoSpecifications.slice(0, 5)">
+              <td>{{ spec.name }}</td>
+              <td>{{ spec.length }} sec</td>
+              <td>{{ spec.style }}</td>
+              <td>{{ spec.status || 'Pending' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p *ngIf="videoSpecifications.length > 5" class="ion-text-center ion-padding-top">
+        Showing 5 of {{ videoSpecifications.length }} videos
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="action-buttons" *ngIf="!isProcessing">
+    <ion-button expand="block" fill="outline" routerLink="/spreadsheet-import">
+      Back
+    </ion-button>
+    <ion-button expand="block" (click)="startProcessing()" [disabled]="!projectName || videoSpecifications.length === 0">
+      Start Processing
+    </ion-button>
+  </div>
+
+  <!-- Processing View -->
+  <ion-card *ngIf="isProcessing">
+    <ion-card-header>
+      <ion-card-title>Processing Videos: {{ projectName }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="progress-section">
+        <h2>Overall Progress:</h2>
+        <ion-progress-bar [value]="overallProgress / 100"></ion-progress-bar>
+        <p class="progress-text">{{ overallProgress }}%</p>
+      </div>
+
+      <div class="video-progress-container">
+        <div *ngFor="let spec of videoSpecifications" class="video-progress-item">
+          <h3>{{ spec.name }}</h3>
+          <ion-progress-bar [value]="(spec.progress || 0) / 100" [color]="getProgressColor(spec.status)"></ion-progress-bar>
+          <div class="progress-details">
+            <span class="progress-percentage">{{ spec.progress || 0 }}%</span>
+            <span class="progress-status" [ngClass]="'status-' + spec.status">
+              {{ getStatusText(spec.status) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="estimated-time" *ngIf="isProcessing">
+        <p>Estimated time remaining: {{ getEstimatedTimeRemaining() }}</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

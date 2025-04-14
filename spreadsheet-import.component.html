@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Import Spreadsheet</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="resetForm()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Upload Spreadsheet</ion-card-title>
+      <ion-card-subtitle>Import video specifications from Excel or CSV file</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="file-upload-container" *ngIf="!file">
+        <ion-button expand="block" (click)="fileInput.click()" color="primary">
+          <ion-icon name="document-outline" slot="start"></ion-icon>
+          Choose File
+        </ion-button>
+        <input #fileInput type="file" (change)="onFileChange($event)" accept=".xlsx,.xls,.csv,.ods" style="display: none;">
+        <p class="ion-text-center ion-padding-top">
+          Supported formats: .xlsx, .csv, .xls, .ods
+        </p>
+        <ion-button expand="block" fill="outline" (click)="downloadTemplate()">
+          <ion-icon name="download-outline" slot="start"></ion-icon>
+          Download Template
+        </ion-button>
+      </div>
+
+      <div *ngIf="file && isUploading">
+        <p class="ion-text-center">Uploading: {{ fileName }}</p>
+        <ion-progress-bar [value]="uploadProgress / 100"></ion-progress-bar>
+      </div>
+
+      <div *ngIf="file && !isUploading">
+        <ion-item lines="none">
+          <ion-icon name="document-text-outline" slot="start"></ion-icon>
+          <ion-label>{{ fileName }}</ion-label>
+          <ion-button slot="end" fill="clear" (click)="resetForm()">
+            <ion-icon name="trash-outline" color="danger"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-list-header>
+          <ion-label>Validation Results</ion-label>
+        </ion-list-header>
+
+        <div *ngIf="isValid" class="validation-success">
+          <ion-item lines="none">
+            <ion-icon name="checkmark-circle" color="success" slot="start"></ion-icon>
+            <ion-label color="success">All entries valid</ion-label>
+          </ion-item>
+        </div>
+
+        <div *ngIf="!isValid" class="validation-errors">
+          <ion-item lines="none" *ngFor="let error of validationErrors">
+            <ion-icon name="alert-circle" color="danger" slot="start"></ion-icon>
+            <ion-label color="danger">{{ error }}</ion-label>
+          </ion-item>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="spreadsheetData.length > 0">
+    <ion-card-header>
+      <ion-card-title>Spreadsheet Preview</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="table-container">
+        <table class="spreadsheet-table">
+          <thead>
+            <tr>
+              <th *ngFor="let header of headers">{{ header }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of spreadsheetData.slice(0, 5)">
+              <td *ngFor="let header of headers">{{ row[header] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p *ngIf="spreadsheetData.length > 5" class="ion-text-center ion-padding-top">
+        Showing 5 of {{ spreadsheetData.length }} rows
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="spreadsheetData.length > 0">
+    <ion-card-header>
+      <ion-card-title>Processing Options</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-checkbox slot="start"></ion-checkbox>
+          <ion-label>Add captions</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-checkbox slot="start"></ion-checkbox>
+          <ion-label>Add background music</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-checkbox slot="start"></ion-checkbox>
+          <ion-label>Extend video segments</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="action-buttons">
+    <ion-button expand="block" fill="outline" (click)="resetForm()">
+      Cancel
+    </ion-button>
+    <ion-button expand="block" [disabled]="!isValid" (click)="processData()">
+      Start Processing
+    </ion-button>
+  </div>
+</ion-content>
